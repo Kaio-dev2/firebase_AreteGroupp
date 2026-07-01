@@ -1,0 +1,397 @@
+/* Google Fonts — loaded via CSS instead of next/font so Babel mode works */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Font CSS variables — replaces the poppins.variable / inter.variable injected
+   by next/font. Tailwind's fontFamily config reads these via var(--font-*). */
+:root {
+  --font-poppins: 'Poppins', sans-serif;
+  --font-inter:   'Inter',   sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: 222 39% 5%; /* #0a0a0f */
+    --foreground: 210 20% 98%; /* #f8fafc */
+
+    --card: 216 48% 11%; /* #0f172a */
+    --card-foreground: 210 20% 98%;
+
+    --popover: 222 39% 5%;
+    --popover-foreground: 210 20% 98%;
+
+    --primary: 210 20% 98%;
+    --primary-foreground: 222 39% 5%;
+
+    --secondary: 216 48% 11%;
+    --secondary-foreground: 210 20% 98%;
+
+    --muted: 216 48% 18%;
+    --muted-foreground: 216 34% 65%;
+
+    --accent: 221 83% 47%; /* #2563eb */
+    --accent-foreground: 210 20% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 216 48% 18%;
+    --input: 216 48% 18%;
+    --ring: 221 83% 57%; /* A slightly lighter blue for rings */
+
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 222 39% 5%; /* #0a0a0f */
+    --foreground: 210 20% 98%; /* #f8fafc */
+
+    --card: 216 48% 11%; /* #0f172a */
+    --card-foreground: 210 20% 98%;
+
+    --popover: 222 39% 5%;
+    --popover-foreground: 210 20% 98%;
+
+    --primary: 210 20% 98%;
+    --primary-foreground: 222 39% 5%;
+
+    --secondary: 216 48% 11%;
+    --secondary-foreground: 210 20% 98%;
+
+    --muted: 216 48% 18%;
+    --muted-foreground: 216 34% 65%;
+
+    --accent: 221 83% 47%; /* #2563eb */
+    --accent-foreground: 210 20% 98%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 216 48% 18%;
+    --input: 216 48% 18%;
+    --ring: 221 83% 57%;
+
+  }
+}
+ 
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@keyframes shine {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@layer utilities {
+  /* Subtle tech/HUD grid backdrop used behind hero & section headers */
+  .bg-grid {
+    background-image:
+      linear-gradient(to right, hsla(var(--accent), 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, hsla(var(--accent), 0.08) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  .bg-grid-fade {
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+  }
+}
+
+/* ============================================================
+   GLOBAL AURORA BACKGROUND — one continuous animated canvas
+   fixed behind the entire site (not per-section), like V0/Linear.
+   Sections use semi-transparent backgrounds so this bleeds
+   through continuously as you scroll, instead of being chopped
+   into isolated, barely-visible boxes per section.
+   ============================================================ */
+
+.global-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Moving grid — diagonal pan, clearly visible but not loud */
+.global-bg__grid {
+  position: absolute;
+  inset: -10% -10%;
+  background-image:
+    linear-gradient(to right, hsla(221, 80%, 65%, 0.14) 1px, transparent 1px),
+    linear-gradient(to bottom, hsla(221, 80%, 65%, 0.14) 1px, transparent 1px);
+  background-size: 56px 56px;
+  animation: grid-drift 40s linear infinite;
+  -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 0%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 0%, #000 0%, transparent 75%);
+}
+@keyframes grid-drift {
+  from { transform: translate(0, 0); }
+  to   { transform: translate(56px, 56px); }
+}
+
+/* Aurora blobs — large, saturated enough to read clearly, slow drift+pulse */
+.global-bg__aurora {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform, opacity;
+}
+.global-bg__aurora--1 {
+  width: 60vw;
+  height: 60vw;
+  max-width: 900px;
+  max-height: 900px;
+  top: -15%;
+  left: -10%;
+  background: radial-gradient(circle at center, hsla(221, 90%, 60%, 0.48), transparent 70%);
+  animation: aurora-1 16s ease-in-out infinite alternate;
+}
+.global-bg__aurora--2 {
+  width: 50vw;
+  height: 50vw;
+  max-width: 750px;
+  max-height: 750px;
+  top: 30%;
+  right: -15%;
+  background: radial-gradient(circle at center, hsla(199, 95%, 58%, 0.38), transparent 70%);
+  animation: aurora-2 20s ease-in-out infinite alternate;
+}
+.global-bg__aurora--3 {
+  width: 55vw;
+  height: 55vw;
+  max-width: 800px;
+  max-height: 800px;
+  bottom: -20%;
+  left: 20%;
+  background: radial-gradient(circle at center, hsla(230, 85%, 58%, 0.34), transparent 70%);
+  animation: aurora-3 24s ease-in-out infinite alternate;
+}
+@keyframes aurora-1 {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.85; }
+  50%  { transform: translate(6vw, 4vh) scale(1.1); opacity: 1; }
+  100% { transform: translate(-4vw, 6vh) scale(0.95); opacity: 0.8; }
+}
+@keyframes aurora-2 {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.75; }
+  50%  { transform: translate(-5vw, 5vh) scale(1.08); opacity: 0.95; }
+  100% { transform: translate(4vw, -3vh) scale(0.96); opacity: 0.8; }
+}
+@keyframes aurora-3 {
+  0%   { transform: translate(0, 0) scale(1); opacity: 0.7; }
+  50%  { transform: translate(3vw, -5vh) scale(1.1); opacity: 0.9; }
+  100% { transform: translate(-5vw, -2vh) scale(0.94); opacity: 0.75; }
+}
+
+/* Circuit traces — echoes the connector-node motif from the logo.
+   The wires themselves stay still (faint, like inactive PCB traces); real
+   light beams travel along them via SVG animateMotion (see layout.tsx),
+   each with a soft comet trail, plus small nodes pulsing at the joints. */
+.circuit-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.circuit-path {
+  fill: none;
+  stroke: hsla(221, 75%, 66%, 0.20);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Traveling beam — bright comet head + three fading trail particles */
+.circuit-beam {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.circuit-beam--head {
+  fill: hsla(199, 100%, 82%, 0.98);
+  filter:
+    drop-shadow(0 0 5px hsla(199, 100%, 72%, 1))
+    drop-shadow(0 0 13px hsla(221, 90%, 62%, 0.7));
+}
+.circuit-beam--trail1 {
+  fill: hsla(205, 95%, 73%, 0.55);
+  filter: drop-shadow(0 0 6px hsla(221, 90%, 60%, 0.4));
+}
+.circuit-beam--trail2 {
+  fill: hsla(212, 90%, 68%, 0.30);
+}
+.circuit-beam--trail3 {
+  fill: hsla(218, 85%, 64%, 0.14);
+}
+
+.circuit-node {
+  fill: hsla(221, 90%, 70%, 0.5);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: circuit-node-pulse 3.2s ease-in-out infinite;
+}
+@keyframes circuit-node-pulse {
+  0%, 100% { transform: scale(0.85); opacity: 0.3; }
+  50%       { transform: scale(1.5);  opacity: 0.85; }
+}
+
+/* Destination node — flashes brighter right as the beam arrives, like a
+   connection being established, on top of its normal gentle pulse. The
+   flash's absolute timing is set per-instance via inline animation-delay
+   (second value in the comma list) so it lines up with that trace's beam. */
+.circuit-node--end {
+  animation:
+    circuit-node-pulse 3.2s ease-in-out infinite,
+    circuit-arrival-flash 16s ease-in-out infinite;
+}
+@keyframes circuit-arrival-flash {
+  0%   { filter: drop-shadow(0 0 0 transparent); }
+  1.5% { transform: scale(2.6); opacity: 1; filter: drop-shadow(0 0 10px hsla(199, 100%, 75%, 0.9)); }
+  9%   { transform: scale(1);   opacity: 0.5; filter: drop-shadow(0 0 0 transparent); }
+  100% { filter: drop-shadow(0 0 0 transparent); }
+}
+
+/* ============================================================
+   CIRCUIT GROUP RELAY — traces hand off to one another like a
+   relay race: each one's visible window is longer than the gap
+   to the next, so consecutive traces briefly overlap. This keeps
+   something visible almost continuously (never all six at once,
+   usually one or two) while still reading as motion travelling
+   from place to place rather than static fixed lines.
+   Six traces × 3s stagger = 18s master cycle, 6s visible window.
+   ============================================================ */
+.circuit-group {
+  opacity: 0;
+  animation: circuit-alternate 16s ease-in-out infinite;
+}
+.circuit-group--a { animation-delay: 0s; }
+.circuit-group--b { animation-delay: 2s; }
+.circuit-group--c { animation-delay: 4s; }
+.circuit-group--d { animation-delay: 6s; }
+.circuit-group--e { animation-delay: 8s; }
+.circuit-group--f { animation-delay: 10s; }
+.circuit-group--g { animation-delay: 12s; }
+.circuit-group--h { animation-delay: 14s; }
+@keyframes circuit-alternate {
+  0%   { opacity: 0; }
+  3%   { opacity: 1; }
+  21%  { opacity: 1; }
+  25%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/* Fixed HUD corner brackets — subtle, constant reference points */
+.hud-corner {
+  position: fixed;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+  z-index: 9998;
+  border-color: hsla(221, 83%, 65%, 0.55);
+  border-style: solid;
+  animation: corner-pulse 5s ease-in-out infinite;
+}
+.hud-corner-tl { top: 16px;    left: 16px;   border-width: 1.5px 0 0 1.5px; animation-delay: 0s;   }
+.hud-corner-tr { top: 16px;    right: 16px;  border-width: 1.5px 1.5px 0 0; animation-delay: 1.25s; }
+.hud-corner-bl { bottom: 16px; left: 16px;   border-width: 0 0 1.5px 1.5px; animation-delay: 2.5s; }
+.hud-corner-br { bottom: 16px; right: 16px;  border-width: 0 1.5px 1.5px 0; animation-delay: 3.75s;}
+@keyframes corner-pulse {
+  0%, 100% { opacity: 0.20; }
+  50%       { opacity: 0.50; }
+}
+
+/* Scanline overlay — barely perceptible film grain */
+.scanline-overlay {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    hsla(0, 0%, 0%, 0.015) 3px,
+    hsla(0, 0%, 0%, 0.015) 4px
+  );
+}
+
+/* ============================================================
+   CARD ENHANCEMENTS — clean, professional hover only
+   ============================================================ */
+
+.card-img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Gentle border glow + lift on hover — no shimmer, no flash */
+.card-tech {
+  transition:
+    box-shadow 0.4s ease,
+    border-color 0.4s ease,
+    transform 0.35s ease !important;
+}
+.card-tech:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 0 1px hsla(221, 83%, 60%, 0.22),
+    0 12px 36px -12px hsla(221, 83%, 50%, 0.18) !important;
+  border-color: hsla(221, 83%, 60%, 0.28) !important;
+}
+
+/* Slim, theme-matching scrollbar for a more polished, "app-like" feel */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 999px;
+  border: 2px solid hsl(var(--background));
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--accent) / 0.6);
+}
+
+html {
+  scrollbar-color: hsl(var(--muted)) hsl(var(--background));
+}
+
+/* ============================================================
+   MOBILE — safe, minimal tweaks only.
+   No font-size overrides, no layout changes.
+   ============================================================ */
+
+/* overflow-x: clip prevents horizontal scroll WITHOUT creating a new
+   scroll container. Using 'hidden' here would break position:sticky
+   on the header (browser treats body as the scroll container instead
+   of the viewport, so sticky stops working). */
+html, body {
+  overflow-x: clip;
+}
+
+@media (max-width: 639px) {
+  /* HUD corners slightly smaller so they don't overlap tap targets */
+  .hud-corner { width: 11px !important; height: 11px !important; }
+  .hud-corner-tl { top: 12px !important; left: 12px !important; }
+  .hud-corner-tr { top: 12px !important; right: 12px !important; }
+  .hud-corner-bl { bottom: 12px !important; left: 12px !important; }
+  .hud-corner-br { bottom: 12px !important; right: 12px !important; }
+
+  /* Aurora: slightly tighter blur on narrow screens */
+  .global-bg__aurora { filter: blur(60px) !important; }
+}
